@@ -84,10 +84,7 @@ public class Main {
             if (input.equals("RQ") || input.equals("RL")) {
 
                 int processNo = sc.nextInt();
-                int[] request = new int[numOfRes];
-                for (int i = 0; i < numOfRes; i++) {
-                    request[i] = sc.nextInt();
-                }
+
 
                 //test case
                 //int processNo = 1;
@@ -95,10 +92,14 @@ public class Main {
 
                 switch (input) {
                     case "RQ":
+                        int[] request = new int[numOfRes];
+                        for (int i = 0; i < numOfRes; i++) {
+                            request[i] = sc.nextInt();
+                        }
                         banker.request(processNo, request);
                         break;
                     case "RL":
-                        //release
+                        banker.releasePro(processNo);
                         break;
                 }
             } else if (input.equalsIgnoreCase("Recover")) {

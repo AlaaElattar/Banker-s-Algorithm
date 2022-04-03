@@ -210,4 +210,17 @@ public class Banker {
         }
 
     }
+
+    public void releasePro(int numOfpro){
+        System.out.println("Before");
+        this.getAllocation();
+        this.getAvailable();
+        for(int i=0;i<allocation[0].length;i++){
+            available[i]+=allocation[numOfpro][i];
+            allocation[numOfpro][i]=0;
+        }
+        System.out.println("After");
+        this.getAllocation();
+        this.getAvailable();
+    }
 }
