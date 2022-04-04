@@ -78,32 +78,41 @@ public class Main {
 
         while (!quit) {
 
-            System.out.println("Enter your choice (RQ - RL - Recover - Quit), process number and resources space separated: ");
+            System.out.println("Enter your choice (RQ - RL - Recover - Quit), process number, resources space separated: : ");
             String input = sc.next();
 
             if (input.equals("RQ") || input.equals("RL")) {
-
                 int processNo = sc.nextInt();
-
-
+                int[] request = new int[numOfRes];
+                for (int i = 0; i < numOfRes; i++) {
+                    request[i] = sc.nextInt();
+                }
                 //test case
                 //int processNo = 1;
                 //int[] request = {1, 0, 2};
 
                 switch (input) {
                     case "RQ":
-                        int[] request = new int[numOfRes];
-                        for (int i = 0; i < numOfRes; i++) {
-                            request[i] = sc.nextInt();
-                        }
                         banker.request(processNo, request);
                         break;
                     case "RL":
-                        banker.releasePro(processNo);
+                        boolean RL = false;
+                        while(RL != true) {
+                            RL = banker.release (processNo,request);
+                            if (RL)
+                                break;
+                            else {
+                                processNo = sc.nextInt ();
+                                for (int i = 0; i < numOfRes; i++) {
+                                    request[i] = sc.nextInt();
+                                }
+
+                            }
+                        }
                         break;
                 }
             } else if (input.equalsIgnoreCase("Recover")) {
-                //recover
+                banker.recovery ();
             } else if (input.equalsIgnoreCase("Quit")) {
                 quit = true;
 
