@@ -283,6 +283,7 @@ public class Banker {
                     max = sum;
                     idx = i;
                 }
+                sum=0;
             }
             System.out.println ( "The process of number " + idx + " will be released" );
             for ( int i = 0 ; i < allocation[ idx ].length ; i++ ) {
