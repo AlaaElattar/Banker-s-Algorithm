@@ -78,7 +78,7 @@ public class Main {
 
         while (!quit) {
 
-            System.out.println("Enter your choice (RQ - RL - Recover - Quit), process number, resources space separated: : ");
+            System.out.println("Enter your choice (RQ - RL - Recover - Quit), process number, resources space separated: ");
             String input = sc.next();
 
             if (input.equals("RQ") || input.equals("RL")) {

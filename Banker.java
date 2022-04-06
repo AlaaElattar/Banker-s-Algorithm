@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Banker {
     public int[] available; // the available amount of each resource
@@ -144,21 +145,34 @@ public class Banker {
         }
         if ( safetyCheck ( ) ) {
             System.out.println ( "Request Approved" );
+            if(waitingProcess.contains(proNo))
+            {
+                waitingProcess.remove(proNo);
+                waitingRequest.remove(request);
+            }
             getAvailable ( );
             getAllocation ( );
             getNeed ( );
 
         } else {
-            System.arraycopy ( tempAvailable , 0 , available , 0 , numOfRes );
-            for ( int i = 0 ; i < numOfPros ; i++ ) {
-                for ( int j = 0 ; j < numOfRes ; j++ ) {
-                    allocation[ i ][ j ] = tempAllocation[ i ][ j ];
-                    need[ i ][ j ] = tempNeed[ i ][ j ];
-                }
-            }
 
-            waitingProcess.add ( proNo );
-            waitingRequest.add ( request );
+            System.out.println("Apply recovery algorithm? Y/N");
+
+            Scanner input= new Scanner(System.in);
+            String recover=input.next();
+            if(recover.equalsIgnoreCase("Y")) recovery();
+            else {
+                System.arraycopy(tempAvailable, 0, available, 0, numOfRes);
+                for (int i = 0; i < numOfPros; i++) {
+                    for (int j = 0; j < numOfRes; j++) {
+                        allocation[i][j] = tempAllocation[i][j];
+                        need[i][j] = tempNeed[i][j];
+                    }
+                }
+
+                waitingProcess.add(proNo);
+                waitingRequest.add(request);
+            }
         }
 
 
@@ -257,7 +271,7 @@ public class Banker {
 
     public void recovery ( ) {
         System.out.println ( "The victim to be released was chosen based on its maximum allocation " );
-        while ( ! safetyCheck ( ) ) {
+        while ( !safetyCheck ( ) || waitingProcess.size()!=0 ) {
             int max = - 1;
             int sum = 0;
             int idx = - 1;
@@ -276,6 +290,11 @@ public class Banker {
             }
 
             prevention ( idx );
+
+            for (int i = 0; i < waitingProcess.size(); i++) {
+
+                this.request(i, waitingRequest.get(i));
+            }
         }
     }
 
