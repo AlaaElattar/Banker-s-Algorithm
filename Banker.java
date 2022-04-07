@@ -118,8 +118,10 @@ public class Banker {
             }
             if ( request[ i ] > available[ i ] ) {
                 System.out.println ( "Waiting for resources" );
-                waitingProcess.add ( proNo );
-                waitingRequest.add ( request );
+                if(!waitingProcess.contains(proNo)){
+                    waitingProcess.add ( proNo );
+                    waitingRequest.add ( request );
+                }
                 check = true;
                 break;
             }
@@ -169,9 +171,10 @@ public class Banker {
                         need[i][j] = tempNeed[i][j];
                     }
                 }
-
-                waitingProcess.add(proNo);
-                waitingRequest.add(request);
+                if(!waitingProcess.contains(proNo)){
+                    waitingProcess.add ( proNo );
+                    waitingRequest.add ( request );
+                }
             }
         }
 
@@ -296,17 +299,13 @@ public class Banker {
                 sum=0;
             }
             System.out.println ( "The process of number " + idx + " will be released" );
-//            for ( int i = 0 ; i < allocation[ idx ].length ; i++ ) {
-//                available[ i ] += allocation[ idx ][ i ];
-//            }
-
             prevention ( idx );
+            if(safetyCheck()){
+                for (int i = 0; i < waitingProcess.size(); i++) {
 
-            for (int i = 0; i < waitingProcess.size(); i++) {
-
-                this.request(i, waitingRequest.get(i));
+                    this.request(waitingProcess.get(i), waitingRequest.get(i));
+                }
             }
-
             if(zeroAllocationCheck())
             {
                 System.out.println("Recovery Failed");
@@ -314,6 +313,5 @@ public class Banker {
             }
         }
     }
-
 
 }
