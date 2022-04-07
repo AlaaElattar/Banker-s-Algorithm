@@ -268,6 +268,16 @@ public class Banker {
         this.getAvailable ( );
     }
 
+    public boolean zeroAllocationCheck()
+    {
+        for ( int i = 0 ; i < numOfPros ; i++ ) {
+            for ( int j = 0 ; j < numOfRes ; j++ ) {
+                if (allocation[ i ][ j ]!=0) return false;
+            }
+        }
+        return true;
+    }
+
 
     public void recovery ( ) {
         System.out.println ( "The victim to be released was chosen based on its maximum allocation " );
@@ -283,17 +293,24 @@ public class Banker {
                     max = sum;
                     idx = i;
                 }
+                sum=0;
             }
             System.out.println ( "The process of number " + idx + " will be released" );
-            for ( int i = 0 ; i < allocation[ idx ].length ; i++ ) {
-                available[ i ] += allocation[ idx ][ i ];
-            }
+//            for ( int i = 0 ; i < allocation[ idx ].length ; i++ ) {
+//                available[ i ] += allocation[ idx ][ i ];
+//            }
 
             prevention ( idx );
 
             for (int i = 0; i < waitingProcess.size(); i++) {
 
                 this.request(i, waitingRequest.get(i));
+            }
+
+            if(zeroAllocationCheck())
+            {
+                System.out.println("Recovery Failed");
+                break;
             }
         }
     }
